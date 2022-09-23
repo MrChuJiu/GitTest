@@ -21,6 +21,10 @@ jobs:
       
   - script: pip install robotframework robotframework-seleniumlibrary && pip install chromedriver
     displayName: 'Install dependencies'
+  - task: PowerShell@2
+    inputs:
+      targetType: 'filePath'
+      filePath: '$(System.DefaultWorkingDirectory)\script_no_params.ps1'
   
   - powershell: robot --pythonpath . test.robot
 
