@@ -1,24 +1,27 @@
 trigger:
 - master
 
-pool:
-  vmImage: 'windows-2019'
 
 jobs:
-  InstallationPython:
-    runs-on: 'windows-2019'
-    steps:
-      - task: UsePythonVersion@0
-        inputs:
-          versionSpec: '3.7'
-          architecture: 'x64'
 
-  Installation Robot:
-    runs-on: 'windows-2019'
-    steps:
-      - name: install robotframework
-        run: pip install robotframework robotframework-seleniumlibrary && pip install chromedriver
-      - name: Copy DockerFile
-        run: cp . .
-      - name: run robot
-        run: robot --pythonpath . -x outputxunit.xml . test.robot
+- job: 'Test'
+  pool:
+    vmImage: 'vs2017-win2016'
+  strategy:
+    matrix:
+      Python37:
+        python.version: '3.7'
+    maxParallel: 1
+
+  steps:
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '$(python.version)'
+      architecture: 'x64'
+
+  - script: pip install robotframework robotframework-seleniumlibrary && npm install chromedriver
+    displayName: 'Install dependencies'
+  
+  - powershell: robot --pythonpath . test.robot
+    displayName: 'Run Robot Scripts'
+
