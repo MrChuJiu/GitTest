@@ -18,10 +18,14 @@ jobs:
     inputs:
       versionSpec: '$(python.version)'
       architecture: 'x64'
-
-  - script: pip install robotframework robotframework-seleniumlibrary && npm install chromedriver && winget install --id Microsoft.Powershell --source winget
+  - task: PowerShell@2
+    inputs:
+      filePath: '.'
+      displayName: 'Run Robot Scripts'
+      
+  - script: pip install robotframework robotframework-seleniumlibrary && pip install chromedriver && pip install Microsoft.Powershell --source winget
     displayName: 'Install dependencies'
   
   - powershell: robot --pythonpath . test.robot
-    displayName: 'Run Robot Scripts'
+
 
