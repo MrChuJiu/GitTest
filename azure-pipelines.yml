@@ -20,7 +20,7 @@ jobs:
       architecture: 'x64'
   - task: PowerShell@2
     inputs:
-      filePath: '.'
+      filePath: '$(System.DefaultWorkingDirectory)\script_no_params.ps1'
       displayName: 'Run Robot Scripts'
       
   - script: pip install robotframework robotframework-seleniumlibrary && pip install chromedriver && pip install Microsoft.Powershell --source winget
